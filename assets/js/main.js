@@ -24,20 +24,22 @@
     window.addEventListener("scroll", onScroll, { passive: true });
   }
 
-  document.querySelectorAll(".filters").forEach(function (group) {
-    const buttons = group.querySelectorAll("button");
-    const cards = document.querySelectorAll(".product-card[data-cat]");
-    buttons.forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        buttons.forEach(function (b) { b.classList.remove("active"); });
-        btn.classList.add("active");
-        const cat = btn.getAttribute("data-filter");
-        cards.forEach(function (card) {
-          card.classList.toggle("is-hidden", cat !== "all" && card.getAttribute("data-cat") !== cat);
-        });
+  const searchInput = document.querySelector("#product-search");
+  const categorySelect = document.querySelector("#product-category");
+  const filterCards = document.querySelectorAll(".product-card[data-cat]");
+  if (filterCards.length && (searchInput || categorySelect)) {
+    const applyFilters = function () {
+      const term = searchInput ? searchInput.value.trim().toLowerCase() : "";
+      const cat = categorySelect ? categorySelect.value : "all";
+      filterCards.forEach(function (card) {
+        const matchesCat = cat === "all" || card.getAttribute("data-cat") === cat;
+        const matchesTerm = !term || card.textContent.toLowerCase().indexOf(term) !== -1;
+        card.classList.toggle("is-hidden", !(matchesCat && matchesTerm));
       });
-    });
-  });
+    };
+    if (searchInput) searchInput.addEventListener("input", applyFilters);
+    if (categorySelect) categorySelect.addEventListener("change", applyFilters);
+  }
 
   const lightbox = document.querySelector("#lightbox");
   if (lightbox) {
