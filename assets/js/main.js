@@ -39,6 +39,47 @@
     });
   });
 
+  const lightbox = document.querySelector("#lightbox");
+  if (lightbox) {
+    const lbImg = lightbox.querySelector("img");
+    const lbTitle = lightbox.querySelector(".lightbox-caption strong");
+    const lbSpec = lightbox.querySelector(".lightbox-caption span");
+    const lbClose = lightbox.querySelector(".lightbox-close");
+
+    var openLightbox = function (card) {
+      const img = card.querySelector(".card-media img");
+      if (!img) return;
+      const title = card.querySelector("figcaption strong");
+      const spec = card.querySelector("figcaption span");
+      lbImg.src = img.currentSrc || img.src;
+      lbImg.alt = img.alt || "";
+      lbTitle.textContent = title ? title.textContent : "";
+      lbSpec.textContent = spec ? spec.textContent : "";
+      lightbox.classList.add("is-open");
+      lightbox.setAttribute("aria-hidden", "false");
+      document.body.classList.add("lightbox-open");
+    };
+    var closeLightbox = function () {
+      lightbox.classList.remove("is-open");
+      lightbox.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("lightbox-open");
+    };
+
+    document.querySelectorAll(".product-card").forEach(function (card) {
+      card.addEventListener("click", function () {
+        openLightbox(card);
+      });
+    });
+
+    if (lbClose) lbClose.addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", function (e) {
+      if (e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && lightbox.classList.contains("is-open")) closeLightbox();
+    });
+  }
+
   const form = document.querySelector("#enquiry-form");
   if (form) {
     form.addEventListener("submit", function (e) {
