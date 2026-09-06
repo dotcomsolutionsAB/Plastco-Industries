@@ -742,11 +742,13 @@ section { padding: 88px 0; }
 .stat span { color: #c9d4ea; font-size: 0.88rem; }
 
 .cert-card {
+  position: relative;
   background: #fff;
   border: 1px solid var(--line);
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 10px 24px rgba(18,24,74,0.06);
+  cursor: zoom-in;
 }
 .cert-card img {
   width: 100%;
@@ -754,6 +756,29 @@ section { padding: 88px 0; }
   object-fit: contain;
   background: #fafbfd;
   padding: 10px;
+}
+.cert-card::after {
+  content: "\1F50D";
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(18, 24, 74, 0.82);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+.cert-card:hover::after {
+  opacity: 1;
+  transform: translateY(0);
 }
 .cert-card div { padding: 14px 16px 18px; }
 .cert-card h3 { font-size: 1rem; }

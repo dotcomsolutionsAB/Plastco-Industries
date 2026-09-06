@@ -48,15 +48,12 @@
     const lbSpec = lightbox.querySelector(".lightbox-caption span");
     const lbClose = lightbox.querySelector(".lightbox-close");
 
-    var openLightbox = function (card) {
-      const img = card.querySelector(".card-media img");
+    var openLightbox = function (img, titleText, specText) {
       if (!img) return;
-      const title = card.querySelector("figcaption strong");
-      const spec = card.querySelector("figcaption span");
       lbImg.src = img.currentSrc || img.src;
       lbImg.alt = img.alt || "";
-      lbTitle.textContent = title ? title.textContent : "";
-      lbSpec.textContent = spec ? spec.textContent : "";
+      lbTitle.textContent = titleText || "";
+      lbSpec.textContent = specText || "";
       lightbox.classList.add("is-open");
       lightbox.setAttribute("aria-hidden", "false");
       document.body.classList.add("lightbox-open");
@@ -69,7 +66,19 @@
 
     document.querySelectorAll(".product-card").forEach(function (card) {
       card.addEventListener("click", function () {
-        openLightbox(card);
+        const img = card.querySelector(".card-media img");
+        const title = card.querySelector("figcaption strong");
+        const spec = card.querySelector("figcaption span");
+        openLightbox(img, title ? title.textContent : "", spec ? spec.textContent : "");
+      });
+    });
+
+    document.querySelectorAll(".cert-card").forEach(function (card) {
+      card.addEventListener("click", function () {
+        const img = card.querySelector("img");
+        const title = card.querySelector("h3");
+        const spec = card.querySelector("p");
+        openLightbox(img, title ? title.textContent : "", spec ? spec.textContent : "");
       });
     });
 
