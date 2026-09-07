@@ -1,0 +1,19 @@
+# Clean URLs: serve .html files without the extension showing
+Options -MultiViews
+RewriteEngine On
+RewriteBase /
+
+# 1. index.html -> root
+RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
+RewriteRule ^index\.html$ / [R=301,L]
+
+# 2. any-other-page.html -> any-other-page (visible URL)
+RewriteCond %{THE_REQUEST} \s/+(.+)\.html[\s?] [NC]
+RewriteRule ^ /%1 [R=301,L]
+
+# 3. internally serve the .html file for the extensionless URL
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^(.*)$ $1.html [L]
+
